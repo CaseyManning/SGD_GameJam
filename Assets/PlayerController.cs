@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    public Vector3 jump;
     public float accel;
-    public float maxSpeed = 10f;
+    public float maxSpeed = 2f;
+    public float jumpSpeed = 40f;
+    public float gravity = 10f;
 
     Rigidbody rb;
     Animator anim;
@@ -18,6 +21,7 @@ public class PlayerController : MonoBehaviour
 
     public GameObject chickenPrefab;
     bool converting = false;
+    bool isGrounded = true;
 
     public Material basemat;
     public Material highlightmat;
@@ -34,29 +38,48 @@ public class PlayerController : MonoBehaviour
     {
         if (!converting)
         {
-            Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * maxSpeed;
-
-            Vector3 refVel = Vector3.zero;
-            float smoothVal = .05f;
-            rb.velocity = Vector3.SmoothDamp(rb.velocity, move, ref refVel, smoothVal);
-            if (move.magnitude > 0.1)
-            {
-                anim.SetBool("Walk", true);
-                Quaternion rot = transform.rotation;
-                transform.LookAt(transform.position + move);
-                transform.rotation = Quaternion.Slerp(rot, transform.rotation, 0.2f);
-            }
-            else
-            {
-                anim.SetBool("Walk", false);
-            }
+            jumpPlayer();
+            movePlayer();
         } else
         {
             rb.velocity = Vector3.zero;
         }
 
-        
+        convertAction();
+    }
 
+    void jumpPlayer()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)  // jump
+        {
+            isGrounded = false;
+            StartCoroutine(Jump());
+            rb.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
+        }
+    }
+
+    void movePlayer()
+    {
+        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * maxSpeed;
+
+        Vector3 refVel = Vector3.zero;
+        float smoothVal = .05f;
+        //move.y = rb.velocity.y;
+        rb.velocity = Vector3.SmoothDamp(rb.velocity, move, ref refVel, smoothVal);
+        if (move.magnitude > 0.1)
+        {
+            anim.SetBool("Walk", true);
+            Quaternion rot = transform.rotation;
+            transform.LookAt(transform.position + move);
+            transform.rotation = Quaternion.Slerp(rot, transform.rotation, 0.2f);
+        }
+        else
+        {
+            anim.SetBool("Walk", false);
+        }
+    }
+
+    void convertAction() {
         foreach(GameObject g in GameObject.FindGameObjectsWithTag("Convertible"))
         {
             if(Vector3.Distance(transform.position, g.transform.position) < convertRange)
@@ -69,11 +92,15 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (Input.GetKey(KeyCode.Space) && canConvert != null && !converting)
+        if (Input.GetKey(KeyCode.E) && canConvert != null && !converting && isGrounded)  // convert
         {
             
             StartCoroutine(ConvertToChicken(canConvert));
         }
+    }
+
+    void OnCollisionEnter() {
+        isGrounded = true;
     }
 
     IEnumerator ConvertToChicken(GameObject g)
@@ -96,5 +123,12 @@ public class PlayerController : MonoBehaviour
         Destroy(g);
         anim.SetBool("Convert", false);
         converting = false;
+    }
+
+    IEnumerator Jump()
+    {
+        //anim.SetBool("Jump", true);
+        yield return new WaitForSeconds(.5f);
+        //anim.SetBool("Jump", false);
     }
 }
