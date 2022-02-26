@@ -5,9 +5,13 @@ using UnityEngine;
 public class WorldGenerator : MonoBehaviour
 {
     public GameObject rock;
+    int nRocks = 50;
 
     public GameObject flower;
     int nFlowers = 200;
+
+    public GameObject tree;
+    int nTrees = 20;
 
     float extent = 20;
 
@@ -26,7 +30,22 @@ public class WorldGenerator : MonoBehaviour
             Vector3 pos = randomPos();
             GameObject nFlower = Instantiate(flower);
             nFlower.transform.position = pos;
-            nFlower.transform.Rotate(new Vector3(0, Random.value * 360, 0));
+            nFlower.transform.Rotate(new Vector3(0, 0, Random.value * 360));
+        }
+
+        for (int i = 0; i < nRocks; i++)
+        {
+            Vector3 pos = randomPos();
+            GameObject nRock = Instantiate(rock);
+            nRock.transform.position = pos;
+            nRock.transform.Rotate(new Vector3(0, 0, Random.value * 360));
+        }
+        for (int i = 0; i < nTrees; i++)
+        {
+            Vector3 pos = randomPos();
+            GameObject nTree = Instantiate(tree);
+            nTree.transform.position = pos;
+            nTree.transform.Rotate(new Vector3(0, 0, Random.value * 360));
         }
     }
 
