@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
 
     GameObject canConvert = null;
 
+    public GameObject feathers;
+
     public float convertRange = 1.5f;
 
     public GameObject chickenPrefab;
@@ -87,6 +89,10 @@ public class PlayerController : MonoBehaviour
         chicken.transform.position = g.transform.position;
         chicken.transform.localScale /= 2;
         chicken.transform.localScale *= g.GetComponent<ConvertibleObj>().scale;
+
+        GameObject featherEffect = Instantiate(feathers);
+        featherEffect.transform.position = g.transform.position;
+
         Destroy(g);
         anim.SetBool("Convert", false);
         converting = false;

@@ -382,6 +382,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   accel: 2
   maxSpeed: 2.3
+  feathers: {fileID: 8552877907092101758, guid: bf8dfbab29bf54f13add1f88c728e606, type: 3}
   convertRange: 1.5
   chickenPrefab: {fileID: 1154984713999675217, guid: aefdabbaec627472c83b8fe82e0de88a, type: 3}
   basemat: {fileID: 2100000, guid: 48e385a92e949485481441410892ec51, type: 2}
