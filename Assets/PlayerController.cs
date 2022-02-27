@@ -13,6 +13,9 @@ public class PlayerController : MonoBehaviour
     public float gravity = -9.81f;
     private float moveY;
 
+    public Vector3 forwardVec;
+    public Vector3 rightVec;
+
     Rigidbody rb;
     Animator anim;
 
@@ -73,7 +76,8 @@ public class PlayerController : MonoBehaviour
     }
 
     void movePlayer() {
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * maxSpeed;
+        //Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * maxSpeed;
+        Vector3 move = (forwardVec * Input.GetAxis("Horizontal") + rightVec * Input.GetAxis("Vertical")).normalized * maxSpeed;
 
         Vector3 refVel = Vector3.zero;
         float smoothVal = .05f;
