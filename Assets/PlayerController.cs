@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
     public float accel;
     public float maxSpeed = 2f;
     public float jumpSpeed = 40f;
-    public float gravity = 10f;
+    public float gravity = -9.81f;
+    private float moveY;
 
     Rigidbody rb;
     Animator anim;
@@ -25,20 +26,26 @@ public class PlayerController : MonoBehaviour
 
     public Material basemat;
     public Material highlightmat;
+    // for walking up slopes
+    private RaycastHit rH;
+    [SerializeField]
+    private float angSpd=5;
+    [SerializeField]
+    private Vector3 slopeSpeed;
+
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         if (!converting)
         {
             jumpPlayer();
+            rotacionarCamera();
             movePlayer();
         } else
         {
@@ -48,8 +55,7 @@ public class PlayerController : MonoBehaviour
         convertAction();
     }
 
-    void jumpPlayer()
-    {
+    void jumpPlayer() {
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)  // jump
         {
             isGrounded = false;
@@ -58,20 +64,27 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void movePlayer()
-    {
+    void movePlayer() {
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * maxSpeed;
 
         Vector3 refVel = Vector3.zero;
         float smoothVal = .05f;
-        //move.y = rb.velocity.y;
         rb.velocity = Vector3.SmoothDamp(rb.velocity, move, ref refVel, smoothVal);
+
         if (move.magnitude > 0.1)
         {
             anim.SetBool("Walk", true);
             Quaternion rot = transform.rotation;
             transform.LookAt(transform.position + move);
             transform.rotation = Quaternion.Slerp(rot, transform.rotation, 0.2f);
+            if (isGrounded) {
+                // code for walking up slopes
+                // source: https://forum.unity.com/threads/character-movement-and-slopes.290381/
+                Physics.Raycast(transform.position,-transform.up,out rH,Mathf.Infinity);
+                slopeSpeed=Vector3.ProjectOnPlane(transform.forward, rH.normal);
+                slopeSpeed=Vector3.Normalize(slopeSpeed);
+                rb.velocity = slopeSpeed*maxSpeed;
+            }
         }
         else
         {
@@ -94,7 +107,6 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.E) && canConvert != null && !converting && isGrounded)  // convert
         {
-            
             StartCoroutine(ConvertToChicken(canConvert));
         }
     }
@@ -102,13 +114,14 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter() {
         isGrounded = true;
     }
+    private void rotacionarCamera() {
+        rb.angularVelocity=new Vector3(0,Input.GetAxis("Mouse X")*angSpd,0);
+    }
 
-    IEnumerator ConvertToChicken(GameObject g)
-    {
+    IEnumerator ConvertToChicken(GameObject g) {
         anim.SetBool("Convert", true);
         converting = true;
         transform.LookAt(g.transform.position);
-
 
         yield return new WaitForSeconds(1);
         
@@ -125,8 +138,7 @@ public class PlayerController : MonoBehaviour
         converting = false;
     }
 
-    IEnumerator Jump()
-    {
+    IEnumerator Jump() {
         //anim.SetBool("Jump", true);
         yield return new WaitForSeconds(.5f);
         //anim.SetBool("Jump", false);
