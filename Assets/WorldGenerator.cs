@@ -8,7 +8,7 @@ public class WorldGenerator : MonoBehaviour
     int nRocks = 50;
 
     public GameObject flower;
-    int nFlowers = 200;
+    int nFlowers = 50;
 
     public GameObject tree;
     int nTrees = 20;
@@ -17,9 +17,23 @@ public class WorldGenerator : MonoBehaviour
 
     Vector3 randomPos()
     {
-        float x = Random.value * extent * 2 - extent;
-        float z = Random.value * extent * 2 - extent;
-        return new Vector3(x, 0, z);
+        float x = -1;
+        float z = -1;
+        float y = -1;
+        while (y == -1)
+        {
+            x = Random.value * extent * 2 - extent;
+            z = Random.value * extent * 2 - extent;
+
+            RaycastHit hit;
+            // Does the ray intersect any objects excluding the player layer
+            if (Physics.Raycast(new Vector3(x, 30, z), new Vector3(0, -1, 0), out hit, Mathf.Infinity))
+            {
+                y = hit.point.y;
+            }
+        }
+
+        return new Vector3(x, y, z);
     }
 
     // Start is called before the first frame update
