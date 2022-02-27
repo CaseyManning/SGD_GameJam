@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
     Rigidbody rb;
     Animator anim;
 
+    bool jumping = false;
+
     GameObject canConvert = null;
 
     public GameObject feathers;
@@ -38,6 +40,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private Vector3 slopeSpeed;
 
+    int maxJumps = 5;
+    int nJumps = 5;
 
     // Start is called before the first frame update
     void Start() {
@@ -50,7 +54,6 @@ public class PlayerController : MonoBehaviour
         if (!converting)
         {
             jumpPlayer();
-            rotacionarCamera();
             movePlayer();
         } else
         {
@@ -67,11 +70,16 @@ public class PlayerController : MonoBehaviour
     }
 
     void jumpPlayer() {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)  // jump
+        if(jumping)
+        {
+            rb.velocity += Time.deltaTime * Vector3.up * jumpSpeed;
+            //rb.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
+        }
+        if (Input.GetKeyDown(KeyCode.Space) && nJumps > 0)  // jump
         {
             isGrounded = false;
+            nJumps--;
             StartCoroutine(Jump());
-            rb.AddForce(Vector3.up * jumpSpeed, ForceMode.Impulse);
         }
     }
 
@@ -125,9 +133,7 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter() {
         isGrounded = true;
-    }
-    private void rotacionarCamera() {
-        rb.angularVelocity=new Vector3(0,Input.GetAxis("Mouse X")*angSpd,0);
+        nJumps = maxJumps;
     }
 
     IEnumerator ConvertToChicken(GameObject g) {
@@ -152,6 +158,9 @@ public class PlayerController : MonoBehaviour
     }
 
     IEnumerator Jump() {
+        jumping = true;
+        yield return new WaitForSeconds(.2f);
+        jumping = false;
         anim.SetBool("Jump", true);
         while(!isGrounded)
         {

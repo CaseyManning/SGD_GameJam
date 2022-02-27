@@ -14,10 +14,10 @@ OcclusionCullingSettings:
 RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
-  m_Fog: 0
+  m_Fog: 1
   m_FogColor: {r: 0.9811321, g: 0.92367625, b: 0.7913849, a: 1}
   m_FogMode: 3
-  m_FogDensity: 0.05
+  m_FogDensity: 0.85
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.1747063, g: 0.19823188, b: 0.24528301, a: 1}
@@ -108,8 +108,8 @@ NavMeshSettings:
     agentTypeID: 0
     agentRadius: 0.5
     agentHeight: 2
-    agentSlope: 46.1
-    agentClimb: 0.4
+    agentSlope: 60
+    agentClimb: 1.9
     ledgeDropHeight: 23.43
     maxJumpAcrossDistance: 6.76
     minRegionArea: 2
@@ -315,8 +315,10 @@ MonoBehaviour:
   jump: {x: 0, y: 0, z: 0}
   accel: 2
   maxSpeed: 3
-  jumpSpeed: 40
+  jumpSpeed: 100
   gravity: 10
+  forwardVec: {x: 0, y: 0, z: 0}
+  rightVec: {x: 0, y: 0, z: 0}
   feathers: {fileID: 8552877907092101758, guid: bf8dfbab29bf54f13add1f88c728e606, type: 3}
   convertRange: 1.5
   chickenPrefab: {fileID: 1154984713999675217, guid: aefdabbaec627472c83b8fe82e0de88a, type: 3}
