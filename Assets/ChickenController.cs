@@ -13,6 +13,7 @@ public class ChickenController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         nav = GetComponent<NavMeshAgent>();
         GetComponent<Animator>().SetBool("Walk", true);
+        gameObject.tag = "Chicken";
     }
 
     // Update is called once per frame
@@ -23,5 +24,12 @@ public class ChickenController : MonoBehaviour
         Quaternion rot = transform.rotation;
         transform.LookAt(player.transform.position);
         transform.rotation = Quaternion.Slerp(rot, transform.rotation, 0.2f);
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "Fox") {
+            Destroy(gameObject);
+        }
     }
 }
