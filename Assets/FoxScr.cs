@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public enum EnemyState
 {
@@ -91,14 +92,19 @@ public class FoxScr : MonoBehaviour
                 SetNewRandomDestination();
             }
 
-            GameObject[] chickens = GameObject.FindGameObjectsWithTag("Chicken");
-            foreach (GameObject ch in chickens)
+            //GameObject[] chickens = GameObject.FindGameObjectsWithTag("Chicken");
+            //foreach (GameObject ch in chickens)
+            //{
+            //    if (Vector3.Distance(ch.transform.position, transform.position) < attackRange && attackCooldown < 0f)
+            //    {
+            //        attack(ch);
+            //        return;
+            //    }
+            //}
+            if (Vector3.Distance(target.transform.position, transform.position) < attackRange && attackCooldown < 0f)
             {
-                if (Vector3.Distance(ch.transform.position, transform.position) < attackRange && attackCooldown < 0f)
-                {
-                    attack(ch);
-                    return;
-                }
+                attack(target);
+                return;
             }
         }
 
@@ -114,13 +120,35 @@ public class FoxScr : MonoBehaviour
                 SetNewRandomDestination();
                 GameObject f = Instantiate(feathers);
                 f.transform.position = attackTarget.transform.position;
-                Destroy(attackTarget);
+                if (attackTarget.CompareTag("Player"))
+                {
+                    GameObject[] others = GameObject.FindGameObjectsWithTag("Chicken");
+                    if(others.Length == 0)
+                    {
+                        Destroy(attackTarget.GetComponentInChildren<SkinnedMeshRenderer>());
+                        StartCoroutine(endgame());
+                    } else
+                    {
+                        player.transform.position = others[0].transform.position;
+                        Destroy(others[0]);
+                    }
+                }
+                else
+                {
+                    Destroy(attackTarget);
+                }
                 state = EnemyState.PATROL;
 
                 GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(0);
             }
         }
        
+    }
+
+    IEnumerator endgame()
+    {
+        yield return 2;
+        SceneManager.LoadScene("Death");
     }
 
     void attack(GameObject chicken)
