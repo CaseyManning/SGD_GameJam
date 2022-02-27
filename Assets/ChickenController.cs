@@ -19,7 +19,6 @@ public class ChickenController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        nav.enabled = true;
         nav.SetDestination(player.transform.position);
         Quaternion rot = transform.rotation;
         transform.LookAt(player.transform.position);

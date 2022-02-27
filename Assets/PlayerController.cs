@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -126,9 +127,10 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(1);
         
         GameObject chicken = Instantiate(chickenPrefab);
-        chicken.transform.position = g.transform.position;
+        chicken.transform.position = g.transform.position + new Vector3(0, 1, 0);
         chicken.transform.localScale /= 2;
         chicken.transform.localScale *= g.GetComponent<ConvertibleObj>().scale;
+        chicken.GetComponent<NavMeshAgent>().Warp(g.transform.position);
 
         GameObject featherEffect = Instantiate(feathers);
         featherEffect.transform.position = g.transform.position;

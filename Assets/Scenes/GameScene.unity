@@ -314,8 +314,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jump: {x: 0, y: 0, z: 0}
   accel: 2
-  maxSpeed: 2.3
-  jumpSpeed: 40
+  maxSpeed: 3
+  jumpSpeed: 20
   gravity: 10
   feathers: {fileID: 8552877907092101758, guid: bf8dfbab29bf54f13add1f88c728e606, type: 3}
   convertRange: 1.5
@@ -354,7 +354,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 4.21
+  m_Radius: 5
   m_Center: {x: 0, y: 4.4, z: 0}
 --- !u!54 &335112191
 Rigidbody:
