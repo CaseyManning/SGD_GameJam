@@ -140,6 +140,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8a35e9c46824da4996995ada38b5f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  feathers: {fileID: 8552877907092101758, guid: bf8dfbab29bf54f13add1f88c728e606, type: 3}
 --- !u!95 &182933435
 Animator:
   serializedVersion: 3
@@ -173,6 +174,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scale: 3
   cost: 0
+  range: 1
 --- !u!195 &182933437
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -507,6 +509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scale: 6
   cost: 0
+  range: 8
 --- !u!1 &483041113 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 487c745a5b8954d359394f828e223f58, type: 3}
@@ -540,6 +543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scale: 6
   cost: 0
+  range: 8
 --- !u!1001 &571129794
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -690,6 +694,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scale: 3
   cost: 0
+  range: 1
 --- !u!114 &571129798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -702,6 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca8a35e9c46824da4996995ada38b5f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  feathers: {fileID: 8552877907092101758, guid: bf8dfbab29bf54f13add1f88c728e606, type: 3}
 --- !u!95 &571129799
 Animator:
   serializedVersion: 3
@@ -947,6 +953,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scale: 7
   cost: 0
+  range: 8
 --- !u!1 &826028970 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 487c745a5b8954d359394f828e223f58, type: 3}
@@ -980,6 +987,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scale: 5
   cost: 0
+  range: 8
 --- !u!1 &1009181823 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 487c745a5b8954d359394f828e223f58, type: 3}
@@ -1013,6 +1021,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scale: 6
   cost: 0
+  range: 8
 --- !u!1001 &1024282425
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1129,8 +1138,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b72cbca4f0a5460d9462ad67c26d3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scale: 10
+  scale: 20
   cost: 0
+  range: 12
 --- !u!1001 &1199662264
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1525,6 +1535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scale: 6
   cost: 0
+  range: 8
 --- !u!1001 &1869308052
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -120,13 +120,13 @@ public class PlayerController : MonoBehaviour
             List<GameObject> converters = new List<GameObject>();
             foreach (GameObject c in GameObject.FindGameObjectsWithTag("Chicken"))
             {
-                if (Vector3.Distance(c.transform.position, g.transform.position) < 2*convertRange)
+                if (Vector3.Distance(c.transform.position, g.transform.position) < 2*convertRange * g.GetComponent<ConvertibleObj>().range)
                 {
                     converters.Add(c);
                     conversionPower += 1;
                 }
             }
-            if(Vector3.Distance(transform.position, g.transform.position) < convertRange* g.GetComponent<ConvertibleObj>().scale && conversionPower >= g.GetComponent<ConvertibleObj>().cost)
+            if(Vector3.Distance(transform.position, g.transform.position) < convertRange* g.GetComponent<ConvertibleObj>().range && conversionPower >= g.GetComponent<ConvertibleObj>().cost)
             {
                 g.GetComponent<MeshRenderer>().material = highlightmat;
 

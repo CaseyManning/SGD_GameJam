@@ -31,7 +31,7 @@ public class CameraFollow : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             //transform.Rotate(new Vector3(0, -Input.GetAxis("Mouse X") * 3f, 0));
-            transform.RotateAround(player.transform.position, new Vector3(0, 1, 0), Input.GetAxis("Mouse X") * 3f);
+            transform.RotateAround(player.transform.position, new Vector3(0, 1, 0), Input.GetAxis("Mouse X") * 6f);
             offset = transform.position - player.transform.position;
 
             Vector3 vec = transform.forward;

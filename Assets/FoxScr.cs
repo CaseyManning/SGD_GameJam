@@ -6,7 +6,8 @@ using UnityEngine.AI;
 public enum EnemyState
 {
     PATROL,
-    CHASE
+    CHASE,
+    ATTACK
 }
 public class FoxScr : MonoBehaviour
 {
@@ -20,8 +21,17 @@ public class FoxScr : MonoBehaviour
     private float patrolTimer;
     float timerMax = 5;
 
+    float attackRange = 1.8f;
 
     float visionRadius = 4f;
+
+    float attackCooldown = -1;
+
+    Quaternion startRot;
+
+    GameObject attackTarget;
+
+    public GameObject feathers;
 
     void Awake() {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -31,7 +41,7 @@ public class FoxScr : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        nav.updateRotation = true;
+        //nav.updateRotation = false;
         destination = transform.position;
 
         state = EnemyState.PATROL;
@@ -42,8 +52,10 @@ public class FoxScr : MonoBehaviour
 
     private void Update()
     {
+
         if(state == EnemyState.PATROL)
         {
+            nav.speed = 2;
             patrolTimer -= Time.deltaTime;
             if(Vector3.Distance(transform.position, destination) < 1f || patrolTimer < 0)
             {
@@ -66,6 +78,7 @@ public class FoxScr : MonoBehaviour
         }
         if(state == EnemyState.CHASE)
         {
+            nav.speed = 3;
             if(target == null)
             {
                 state = EnemyState.PATROL;
@@ -77,8 +90,46 @@ public class FoxScr : MonoBehaviour
                 state = EnemyState.PATROL;
                 SetNewRandomDestination();
             }
+
+            GameObject[] chickens = GameObject.FindGameObjectsWithTag("Chicken");
+            foreach (GameObject ch in chickens)
+            {
+                if (Vector3.Distance(ch.transform.position, transform.position) < attackRange && attackCooldown < 0f)
+                {
+                    attack(ch);
+                    return;
+                }
+            }
         }
-        
+
+       
+        if(state == EnemyState.ATTACK)
+        {
+            transform.LookAt(transform.position - (attackTarget.transform.position - transform.position));
+            transform.rotation = startRot;
+            attackCooldown -= Time.deltaTime;
+            if(attackCooldown < 0)
+            {
+                nav.enabled = true;
+                SetNewRandomDestination();
+                GameObject f = Instantiate(feathers);
+                f.transform.position = attackTarget.transform.position;
+                Destroy(attackTarget);
+                state = EnemyState.PATROL;
+            }
+        }
+       
+    }
+
+    void attack(GameObject chicken)
+    {
+        startRot = transform.rotation;
+        state = EnemyState.ATTACK;
+        nav.speed = 0;
+
+        GetComponent<Animator>().SetTrigger("Attack");
+        attackCooldown = .5f;
+        attackTarget = chicken;
     }
 
     void SetNewRandomDestination() {
