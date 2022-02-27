@@ -139,8 +139,11 @@ public class PlayerController : MonoBehaviour
     }
 
     IEnumerator Jump() {
-        //anim.SetBool("Jump", true);
-        yield return new WaitForSeconds(.5f);
-        //anim.SetBool("Jump", false);
+        anim.SetBool("Jump", true);
+        while(!isGrounded)
+        {
+            yield return new WaitForSeconds(.1f);
+        }
+        anim.SetBool("Jump", false);
     }
 }
