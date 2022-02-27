@@ -1,20 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class ConvertibleObj : MonoBehaviour
+public class deathcontroller : MonoBehaviour
 {
-    public int scale = 1;
-    public int cost;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        cost = 2 * scale;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
+        {
+            SceneManager.LoadScene("GameScene");
+        }
     }
 }

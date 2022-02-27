@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update() {
+        rb.angularVelocity = Vector3.zero;
         if (!converting)
         {
             jumpPlayer();
