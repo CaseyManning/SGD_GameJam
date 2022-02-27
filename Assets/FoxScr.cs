@@ -27,6 +27,8 @@ public class FoxScr : MonoBehaviour
     float visionRadius = 4f;
 
     float attackCooldown = -1;
+    float maxRadius = 30;
+    NavMeshHit navHit;
 
     Quaternion startRot;
 
@@ -43,7 +45,7 @@ public class FoxScr : MonoBehaviour
     void Start()
     {
         //nav.updateRotation = false;
-        destination = transform.position;
+        //destination = transform.position;
 
         state = EnemyState.PATROL;
 
@@ -58,7 +60,8 @@ public class FoxScr : MonoBehaviour
         {
             nav.speed = 2;
             patrolTimer -= Time.deltaTime;
-            if(Vector3.Distance(transform.position, destination) < 1f || patrolTimer < 0)
+            //if(Vector3.Distance(transform.position, destination) < 1f || patrolTimer < 0)
+            if (patrolTimer < 0)
             {
                 SetNewRandomDestination();
             }
@@ -177,12 +180,17 @@ public class FoxScr : MonoBehaviour
         attackTarget = chicken;
     }
 
-    void SetNewRandomDestination() {
-        float randRadius = Random.Range(5, 10);
-        Vector3 randDir = Random.insideUnitSphere * randRadius;
-        randDir += transform.position;
-        NavMeshHit navHit;
-        NavMesh.SamplePosition(randDir, out navHit, randRadius, -1);
+    Vector3 SetNewRandomDestination() {
+        //float randRadius = Random.Range(20, 30);
+        int noFreeze = 0;
+        // re-sample dest points until one is decently far away
+        while ((Vector3.Distance(transform.position, destination) < 2.5f) && (noFreeze < 100)) {
+            Vector3 randDir = Random.insideUnitSphere * maxRadius;
+            randDir += transform.position;
+            NavMesh.SamplePosition(randDir, out navHit, maxRadius, -1);
+            noFreeze++;
+        }
         nav.SetDestination(navHit.position);
+        return navHit.position;
     }
 }
