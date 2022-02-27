@@ -23,6 +23,8 @@ public class TutorialController : MonoBehaviour
     void Start()
     {
         state = TutorialStep.Move;
+
+        GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().audioMixerSnapshots[1].TransitionTo(0f);
     }
 
     // Update is called once per frame

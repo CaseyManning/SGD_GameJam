@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 5601161417852966575}
   m_Layer: 0
   m_Name: Boombox
-  m_TagString: Untagged
+  m_TagString: Boombox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
