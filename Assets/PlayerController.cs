@@ -67,9 +67,9 @@ public class PlayerController : MonoBehaviour
     void movePlayer() {
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * maxSpeed;
 
-        Vector3 refVel = Vector3.zero;
-        float smoothVal = .05f;
-        rb.velocity = Vector3.SmoothDamp(rb.velocity, move, ref refVel, smoothVal);
+        //Vector3 refVel = Vector3.zero;
+        //float smoothVal = .05f;
+        //rb.velocity = Vector3.SmoothDamp(rb.velocity, move, ref refVel, smoothVal);
 
         if (move.magnitude > 0.1)
         {
@@ -81,7 +81,7 @@ public class PlayerController : MonoBehaviour
                 // code for walking up slopes
                 // source: https://forum.unity.com/threads/character-movement-and-slopes.290381/
                 Physics.Raycast(transform.position,-transform.up,out rH,Mathf.Infinity);
-                slopeSpeed=Vector3.ProjectOnPlane(transform.forward, rH.normal);
+                slopeSpeed=Vector3.ProjectOnPlane(move, rH.normal);
                 slopeSpeed=Vector3.Normalize(slopeSpeed);
                 rb.velocity = slopeSpeed*maxSpeed;
             }
