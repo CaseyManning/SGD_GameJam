@@ -8,14 +8,16 @@ public class TutorialController : MonoBehaviour
 {
     enum TutorialStep
     {
-        Move, Jump, Rotate, Convert, Done
+        Move, Jump, Rotate, Convert, Convert2, Conclusion, Done
     }
 
     TutorialStep state;
 
     float walkTimer = 1f;
-    float rotateTimer = 1f;
-    float doneTimer = 2f;
+    float rotateTimer = 0.5f;
+    float convertTimer = 5f;
+    float conclusionTimer = 7f;
+    float doneTimer = 5f;
 
     float jumpCount = 0;
 
@@ -56,28 +58,50 @@ public class TutorialController : MonoBehaviour
         }
         if(state == TutorialStep.Rotate)
         {
-            if (Input.GetAxis("Horizontal") != 0 && Input.GetMouseButton(0))
+            if (Input.GetAxis("Horizontal") != 0 && (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)))
             {
                 rotateTimer -= Time.deltaTime;
             }
             if (rotateTimer <= 0)
             {
                 state = TutorialStep.Convert;
-                GetComponent<Text>().text = "Press (E) While Near the Flower to Turn it Into a Chicken";
+                GetComponent<Text>().text = "Press (E) while near a Flower to turn it into a Chicken";
             }
         }
         if(state == TutorialStep.Convert)
         {
             if(GameObject.FindGameObjectsWithTag("Chicken").Length > 0)
             {
-                GetComponent<Text>().text = "Good Luck!";
+                state = TutorialStep.Convert2;
+            }
+        }
+        if (state == TutorialStep.Convert2)
+        {
+            GetComponent<Text>().text = "Having more Chickens allows you to turn larger things into Chickens";
+            convertTimer -= Time.deltaTime;
+            if(convertTimer <= 0)
+            {
+                GetComponent<Text>().text = "Try to turn the Tree into a Chicken";
+            }
+            if (GameObject.FindGameObjectsWithTag("Chicken").Length == 5)
+            {
+                state = TutorialStep.Conclusion;
+            }
+        }
+        if (state == TutorialStep.Conclusion)
+        {  
+            GetComponent<Text>().text = "Great Job! The larger the object, the more Chickens you need to convert it";
+            conclusionTimer -= Time.deltaTime;
+            if (conclusionTimer <= 0)
+            {
                 state = TutorialStep.Done;
             }
         }
         if(state == TutorialStep.Done)
         {
+            GetComponent<Text>().text = "I wonder what other things we can turn into Chickens...";
             doneTimer -= Time.deltaTime;
-            if(doneTimer < 0)
+            if(doneTimer <= 0)
             {
                 SceneManager.LoadScene("Start");
             }

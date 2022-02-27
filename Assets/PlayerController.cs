@@ -49,6 +49,8 @@ public class PlayerController : MonoBehaviour
 
     public bool beenAttacked = false;
 
+    public bool inTutorial = false;
+
     public float chickenPower = 0;
     float maxChickenPower = 5;
 
@@ -81,37 +83,41 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("Death");
         }
 
-        chickenPower = 0;
-        foreach(GameObject ch in GameObject.FindGameObjectsWithTag("Chicken"))
+        if (!inTutorial)
         {
-            chickenPower += (int) (ch.transform.localScale.x * 20);
-        }
-        GameObject.FindGameObjectWithTag("ChickenBar").GetComponent<RectTransform>().localScale = new Vector2((float) chickenPower / maxChickenPower, 1);
-
-        if(chickenPower >= maxChickenPower)
-        {
-            foreach (GameObject ground in GameObject.FindGameObjectsWithTag("Ground"))
+            chickenPower = 0;
+            foreach (GameObject ch in GameObject.FindGameObjectsWithTag("Chicken"))
             {
-                ground.GetComponent<MeshRenderer>().materials = new Material[] { highlightmat, highlightmat };
+                chickenPower += (int)(ch.transform.localScale.x * 20);
             }
+            GameObject.FindGameObjectWithTag("ChickenBar").GetComponent<RectTransform>().localScale = new Vector2((float)chickenPower / maxChickenPower, 1);
+        
 
-            if (Input.GetKeyDown(KeyCode.E) && isGrounded)  // convert
+            if(chickenPower >= maxChickenPower)
             {
-                foreach (GameObject helper in GameObject.FindGameObjectsWithTag("Chicken"))
+                foreach (GameObject ground in GameObject.FindGameObjectsWithTag("Ground"))
                 {
-                    helper.GetComponent<ChickenController>().doConvert(transform.position);
+                    ground.GetComponent<MeshRenderer>().materials = new Material[] { highlightmat, highlightmat };
                 }
-                convertingAll = true;
-                GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
-                beenAttacked = false;
-                StartCoroutine(ConvertToChicken(GameObject.FindGameObjectWithTag("Ground")));
-            }
 
-        } else
-        {
-            foreach (GameObject ground in GameObject.FindGameObjectsWithTag("Ground"))
+                if (Input.GetKeyDown(KeyCode.E) && isGrounded)  // convert
+                {
+                    foreach (GameObject helper in GameObject.FindGameObjectsWithTag("Chicken"))
+                    {
+                        helper.GetComponent<ChickenController>().doConvert(transform.position);
+                    }
+                    convertingAll = true;
+                    GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
+                    beenAttacked = false;
+                    StartCoroutine(ConvertToChicken(GameObject.FindGameObjectWithTag("Ground")));
+                }
+
+            } else
             {
-                ground.GetComponent<MeshRenderer>().materials = new Material[] { basemat, basemat };
+                foreach (GameObject ground in GameObject.FindGameObjectsWithTag("Ground"))
+                {
+                    ground.GetComponent<MeshRenderer>().materials = new Material[] { basemat, basemat };
+                }
             }
         }
     }
