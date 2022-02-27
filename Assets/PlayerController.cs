@@ -116,19 +116,30 @@ public class PlayerController : MonoBehaviour
     void convertAction() {
         foreach(GameObject g in GameObject.FindGameObjectsWithTag("Convertible"))
         {
-            if(Vector3.Distance(transform.position, g.transform.position) < convertRange)
+            int conversionPower = 2;
+            List<GameObject> converters = new List<GameObject>();
+            foreach (GameObject c in GameObject.FindGameObjectsWithTag("Chicken"))
             {
-                canConvert = g;
+                if (Vector3.Distance(c.transform.position, g.transform.position) < 2*convertRange)
+                {
+                    converters.Add(c);
+                    conversionPower += 1;
+                }
+            }
+            if(Vector3.Distance(transform.position, g.transform.position) < convertRange && conversionPower >= g.GetComponent<ConvertibleObj>().cost)
+            {
                 g.GetComponent<MeshRenderer>().material = highlightmat;
+
+                if (Input.GetKey(KeyCode.E) && isGrounded)  // convert
+                {
+                    StartCoroutine(ConvertToChicken(g));
+                }
+
             } else
             {
                 g.GetComponent<MeshRenderer>().material = basemat;
             }
-        }
-
-        if (Input.GetKey(KeyCode.E) && canConvert != null && !converting && isGrounded)  // convert
-        {
-            StartCoroutine(ConvertToChicken(canConvert));
+            
         }
     }
 
@@ -143,17 +154,20 @@ public class PlayerController : MonoBehaviour
         transform.LookAt(g.transform.position);
 
         yield return new WaitForSeconds(1);
-        
-        GameObject chicken = Instantiate(chickenPrefab);
-        chicken.transform.position = g.transform.position + new Vector3(0, 1, 0);
-        chicken.transform.localScale /= 2;
-        chicken.transform.localScale *= g.GetComponent<ConvertibleObj>().scale;
-        chicken.GetComponent<NavMeshAgent>().Warp(g.transform.position);
 
-        GameObject featherEffect = Instantiate(feathers);
-        featherEffect.transform.position = g.transform.position;
+        if (g != null)
+        {
+            GameObject chicken = Instantiate(chickenPrefab);
+            chicken.transform.position = g.transform.position + new Vector3(0, 1, 0);
+            chicken.transform.localScale /= 2;
+            chicken.transform.localScale *= g.GetComponent<ConvertibleObj>().scale;
+            chicken.GetComponent<NavMeshAgent>().Warp(g.transform.position);
 
-        Destroy(g);
+            GameObject featherEffect = Instantiate(feathers);
+            featherEffect.transform.position = g.transform.position;
+
+            Destroy(g);
+        }
         anim.SetBool("Convert", false);
         converting = false;
     }
