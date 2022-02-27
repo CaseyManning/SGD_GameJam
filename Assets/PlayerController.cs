@@ -126,12 +126,16 @@ public class PlayerController : MonoBehaviour
                     conversionPower += 1;
                 }
             }
-            if(Vector3.Distance(transform.position, g.transform.position) < convertRange && conversionPower >= g.GetComponent<ConvertibleObj>().cost)
+            if(Vector3.Distance(transform.position, g.transform.position) < convertRange* g.GetComponent<ConvertibleObj>().scale && conversionPower >= g.GetComponent<ConvertibleObj>().cost)
             {
                 g.GetComponent<MeshRenderer>().material = highlightmat;
 
                 if (Input.GetKey(KeyCode.E) && isGrounded)  // convert
                 {
+                    foreach(GameObject helper in converters)
+                    {
+                        helper.GetComponent<ChickenController>().doConvert(g.transform.position);
+                    }
                     StartCoroutine(ConvertToChicken(g));
                 }
 

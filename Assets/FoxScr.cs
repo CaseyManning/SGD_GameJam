@@ -21,7 +21,7 @@ public class FoxScr : MonoBehaviour
     float timerMax = 5;
 
 
-    float visionRadius = 5f;
+    float visionRadius = 4f;
 
     void Awake() {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -69,11 +69,13 @@ public class FoxScr : MonoBehaviour
             if(target == null)
             {
                 state = EnemyState.PATROL;
+                SetNewRandomDestination();
             }
             nav.SetDestination(target.transform.position);
             if(Vector3.Distance(target.transform.position, transform.position) > visionRadius * 1.5f)
             {
                 state = EnemyState.PATROL;
+                SetNewRandomDestination();
             }
         }
         
