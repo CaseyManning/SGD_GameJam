@@ -5,7 +5,7 @@ using UnityEngine;
 public class WorldGenerator : MonoBehaviour
 {
     public GameObject rock;
-    int nRocks = 50;
+    int nRocks = 30;
 
     public GameObject flower;
     int nFlowers = 50;

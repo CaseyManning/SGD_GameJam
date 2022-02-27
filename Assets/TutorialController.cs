@@ -77,7 +77,7 @@ public class TutorialController : MonoBehaviour
             doneTimer -= Time.deltaTime;
             if(doneTimer < 0)
             {
-                SceneManager.LoadScene("GameScene");
+                SceneManager.LoadScene("Start");
             }
         }
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class IntroController : MonoBehaviour
+public class LoreController : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -14,9 +14,9 @@ public class IntroController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if ((Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space)) && Time.timeSinceLevelLoad > 1)
+        if ((Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space)) && Time.timeSinceLevelLoad > 3)
         {
-            SceneManager.LoadScene("Lore");
+            SceneManager.LoadScene("GameScene");
         }
     }
 }

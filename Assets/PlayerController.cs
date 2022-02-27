@@ -10,7 +10,6 @@ public class PlayerController : MonoBehaviour
     public float accel;
     public float maxSpeed = 2f;
     public float jumpSpeed = 40f;
-    public float gravity = -9.81f;
     private float moveY;
 
     public Vector3 forwardVec;
@@ -18,6 +17,8 @@ public class PlayerController : MonoBehaviour
 
     Rigidbody rb;
     Animator anim;
+
+    public GameObject boombox;
 
     bool jumping = false;
 
@@ -45,6 +46,7 @@ public class PlayerController : MonoBehaviour
 
     // Start is called before the first frame update
     void Start() {
+        boombox = GameObject.FindGameObjectWithTag("Boombox");
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
     }
@@ -81,6 +83,7 @@ public class PlayerController : MonoBehaviour
             isGrounded = false;
             nJumps--;
             StartCoroutine(Jump());
+            boombox.GetComponent<AudioController>().PlayOneShot(2);
         }
     }
 
@@ -130,12 +133,13 @@ public class PlayerController : MonoBehaviour
             {
                 g.GetComponent<MeshRenderer>().material = highlightmat;
 
-                if (Input.GetKey(KeyCode.E) && isGrounded)  // convert
+                if (Input.GetKeyDown(KeyCode.E) && isGrounded)  // convert
                 {
                     foreach(GameObject helper in converters)
                     {
                         helper.GetComponent<ChickenController>().doConvert(g.transform.position);
                     }
+                    GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
                     StartCoroutine(ConvertToChicken(g));
                 }
 

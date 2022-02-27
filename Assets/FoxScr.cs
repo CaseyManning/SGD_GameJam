@@ -116,6 +116,8 @@ public class FoxScr : MonoBehaviour
                 f.transform.position = attackTarget.transform.position;
                 Destroy(attackTarget);
                 state = EnemyState.PATROL;
+
+                GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(0);
             }
         }
        
