@@ -319,6 +319,11 @@ public class PlayerController : MonoBehaviour
     IEnumerator zoomOut()
     {
         Destroy(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>());
+        foreach (GameObject fox in GameObject.FindGameObjectsWithTag("Fox"))
+        {
+            Destroy(fox);
+        }
+        
         for (int i = 0; i < 150; i++)
         {
             yield return new WaitForSeconds(0.02f);
