@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -15,10 +16,12 @@ public class PlayerController : MonoBehaviour
     public Vector3 forwardVec;
     public Vector3 rightVec;
 
+    public GameObject fadeOut;
+
     Rigidbody rb;
     Animator anim;
 
-    public GameObject boombox;
+    GameObject boombox;
 
     bool jumping = false;
 
@@ -43,6 +46,13 @@ public class PlayerController : MonoBehaviour
 
     int maxJumps = 5;
     int nJumps = 5;
+
+    public bool beenAttacked = false;
+
+    public float chickenPower = 0;
+    float maxChickenPower = 5;
+
+    bool convertingAll = false;
 
     // Start is called before the first frame update
     void Start() {
@@ -69,6 +79,40 @@ public class PlayerController : MonoBehaviour
         {
             print("dying");
             SceneManager.LoadScene("Death");
+        }
+
+        chickenPower = 0;
+        foreach(GameObject ch in GameObject.FindGameObjectsWithTag("Chicken"))
+        {
+            chickenPower += (int) (ch.transform.localScale.x * 20);
+        }
+        GameObject.FindGameObjectWithTag("ChickenBar").GetComponent<RectTransform>().localScale = new Vector2((float) chickenPower / maxChickenPower, 1);
+
+        if(chickenPower >= maxChickenPower)
+        {
+            foreach (GameObject ground in GameObject.FindGameObjectsWithTag("Ground"))
+            {
+                ground.GetComponent<MeshRenderer>().materials = new Material[] { highlightmat, highlightmat };
+            }
+
+            if (Input.GetKeyDown(KeyCode.E) && isGrounded)  // convert
+            {
+                foreach (GameObject helper in GameObject.FindGameObjectsWithTag("Chicken"))
+                {
+                    helper.GetComponent<ChickenController>().doConvert(transform.position);
+                }
+                convertingAll = true;
+                GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
+                beenAttacked = false;
+                StartCoroutine(ConvertToChicken(GameObject.FindGameObjectWithTag("Ground")));
+            }
+
+        } else
+        {
+            foreach (GameObject ground in GameObject.FindGameObjectsWithTag("Ground"))
+            {
+                ground.GetComponent<MeshRenderer>().materials = new Material[] { basemat, basemat };
+            }
         }
     }
 
@@ -117,6 +161,7 @@ public class PlayerController : MonoBehaviour
     }
 
     void convertAction() {
+        
         foreach(GameObject g in GameObject.FindGameObjectsWithTag("Convertible"))
         {
             int conversionPower = 2;
@@ -140,6 +185,7 @@ public class PlayerController : MonoBehaviour
                         helper.GetComponent<ChickenController>().doConvert(g.transform.position);
                     }
                     GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
+                    beenAttacked = false;
                     StartCoroutine(ConvertToChicken(g));
                 }
 
@@ -148,6 +194,41 @@ public class PlayerController : MonoBehaviour
                 g.GetComponent<MeshRenderer>().material = basemat;
             }
             
+        }
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Fox"))
+        {
+            int conversionPower = 2;
+            List<GameObject> converters = new List<GameObject>();
+            foreach (GameObject c in GameObject.FindGameObjectsWithTag("Chicken"))
+            {
+                if (Vector3.Distance(c.transform.position, g.transform.position) < 2 * convertRange * g.GetComponent<ConvertibleObj>().range)
+                {
+                    converters.Add(c);
+                    conversionPower += 1;
+                }
+            }
+            if (Vector3.Distance(transform.position, g.transform.position) < convertRange * g.GetComponent<ConvertibleObj>().range && conversionPower >= g.GetComponent<ConvertibleObj>().cost)
+            {
+                SkinnedMeshRenderer rend = g.GetComponentInChildren<SkinnedMeshRenderer>();
+                rend.materials = new Material[] { highlightmat, highlightmat, highlightmat };
+
+                if (Input.GetKeyDown(KeyCode.E) && isGrounded)  // convert
+                {
+                    foreach (GameObject helper in converters)
+                    {
+                        helper.GetComponent<ChickenController>().doConvert(g.transform.position);
+                    }
+                    GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
+                    StartCoroutine(ConvertToChicken(g));
+                }
+
+            }
+            else
+            {
+                SkinnedMeshRenderer rend = g.GetComponentInChildren<SkinnedMeshRenderer>();
+                rend.materials = new Material[] {basemat, basemat, basemat};
+            }
+
         }
     }
 
@@ -163,7 +244,40 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(1);
 
-        if (g != null)
+        if(convertingAll)
+        {
+            foreach(GameObject conv in GameObject.FindGameObjectsWithTag("Convertible"))
+            {
+                GameObject chicken = Instantiate(chickenPrefab);
+                chicken.transform.position = conv.transform.position + new Vector3(0, 1, 0);
+                chicken.transform.localScale /= 2;
+                chicken.transform.localScale *= conv.GetComponent<ConvertibleObj>().scale;
+                chicken.GetComponent<NavMeshAgent>().Warp(conv.transform.position);
+
+                GameObject featherEffect = Instantiate(feathers);
+                featherEffect.transform.position = conv.transform.position;
+
+                Destroy(conv);
+            }
+            foreach (GameObject conv in GameObject.FindGameObjectsWithTag("Ground"))
+            {
+                GameObject chicken = Instantiate(chickenPrefab);
+                chicken.transform.position = conv.transform.position + new Vector3(0, 1, 0);
+                chicken.transform.localScale /= 2;
+                chicken.transform.localScale *= 10;
+                chicken.GetComponent<NavMeshAgent>().Warp(conv.transform.position);
+
+                GameObject featherEffect = Instantiate(feathers);
+                featherEffect.transform.position = conv.transform.position;
+
+                Destroy(conv);
+            }
+            transform.localScale *= 30;
+            StartCoroutine(zoomOut());
+            yield break;
+        }
+
+        if (g != null && !beenAttacked)
         {
             GameObject chicken = Instantiate(chickenPrefab);
             chicken.transform.position = g.transform.position + new Vector3(0, 1, 0);
@@ -190,5 +304,23 @@ public class PlayerController : MonoBehaviour
             yield return new WaitForSeconds(.1f);
         }
         anim.SetBool("Jump", false);
+    }
+
+    IEnumerator zoomOut()
+    {
+        Destroy(GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>());
+        for (int i = 0; i < 150; i++)
+        {
+            yield return new WaitForSeconds(0.02f);
+            GameObject.FindGameObjectWithTag("MainCamera").transform.position += -GameObject.FindGameObjectWithTag("MainCamera").transform.forward * 0.2f;
+        }
+        for (int i = 0; i < 100; i++)
+        {
+            yield return new WaitForSeconds(0.01f);
+            fadeOut.GetComponent<RawImage>().color = new Color(0.0625f, 0.0625f, 0.0625f, ((float)i)/100f);
+        }
+        fadeOut.GetComponent<RawImage>().color = new Color(0.0625f, 0.0625f, 0.0625f, 1);
+        yield return new WaitForSeconds(0.8f);
+        SceneManager.LoadScene("Victory");
     }
 }

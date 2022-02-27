@@ -8,6 +8,8 @@ TagManager:
   - Convertible
   - Fox
   - Boombox
+  - ChickenBar
+  - Ground
   layers:
   - Default
   - TransparentFX

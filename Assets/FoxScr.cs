@@ -85,6 +85,15 @@ public class FoxScr : MonoBehaviour
                 state = EnemyState.PATROL;
                 SetNewRandomDestination();
             }
+
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Chicken"))
+            {
+                if (Vector3.Distance(g.transform.position, transform.position) < Vector3.Distance(target.transform.position, transform.position)-0.5)
+                {
+                    target = g;
+                }
+            }
+
             nav.SetDestination(target.transform.position);
             if(Vector3.Distance(target.transform.position, transform.position) > visionRadius * 1.5f)
             {
@@ -111,6 +120,11 @@ public class FoxScr : MonoBehaviour
        
         if(state == EnemyState.ATTACK)
         {
+            if(attackTarget == null)
+            {
+                state = EnemyState.PATROL;
+                return;
+            }
             transform.LookAt(transform.position - (attackTarget.transform.position - transform.position));
             transform.rotation = startRot;
             attackCooldown -= Time.deltaTime;
@@ -129,6 +143,7 @@ public class FoxScr : MonoBehaviour
                         StartCoroutine(endgame());
                     } else
                     {
+                        player.GetComponent<PlayerController>().beenAttacked = true;
                         player.transform.position = others[0].transform.position;
                         Destroy(others[0]);
                     }
@@ -147,7 +162,7 @@ public class FoxScr : MonoBehaviour
 
     IEnumerator endgame()
     {
-        yield return 2;
+        yield return new WaitForSeconds(0.5f);
         SceneManager.LoadScene("Death");
     }
 
