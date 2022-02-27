@@ -231,7 +231,7 @@ MonoBehaviour:
   jumpSpeed: 100
   forwardVec: {x: 0, y: 0, z: 0}
   rightVec: {x: 0, y: 0, z: 0}
-  boombox: {fileID: 0}
+  fadeOut: {fileID: 0}
   feathers: {fileID: 8552877907092101758, guid: bf8dfbab29bf54f13add1f88c728e606, type: 3}
   convertRange: 1.5
   chickenPrefab: {fileID: 1154984713999675217, guid: aefdabbaec627472c83b8fe82e0de88a, type: 3}
@@ -239,6 +239,9 @@ MonoBehaviour:
   highlightmat: {fileID: 2100000, guid: c27cb928fb7d4404abc01f8da1e7f2ed, type: 2}
   angSpd: 5
   slopeSpeed: {x: 0, y: 0, z: 0}
+  beenAttacked: 0
+  inTutorial: 1
+  chickenPower: 0
 --- !u!95 &335112189
 Animator:
   serializedVersion: 3

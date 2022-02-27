@@ -16,7 +16,7 @@ public class deathcontroller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space))
+        if(Input.GetMouseButton(0) || Input.GetKey(KeyCode.Space) && Time.timeSinceLevelLoad > 1)
         {
             SceneManager.LoadScene("GameScene");
         }

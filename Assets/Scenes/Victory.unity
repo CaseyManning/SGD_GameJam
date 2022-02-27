@@ -157,8 +157,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.000015259}
-  m_SizeDelta: {x: 1054.4988, y: 180.4764}
+  m_AnchoredPosition: {x: 0, y: 0.000015259}
+  m_SizeDelta: {x: 668.7913, y: 180.4764}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &304497650
 MonoBehaviour:
@@ -182,10 +182,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: c940e6c0999f848f699614e956d0fa3a, type: 3}
-    m_FontSize: 96
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 160
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -193,7 +193,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: yay
+  m_Text: 'your work is done.
+
+
+    the world has become chicken'
 --- !u!222 &304497651
 CanvasRenderer:
   m_ObjectHideFlags: 0

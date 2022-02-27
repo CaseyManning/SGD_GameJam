@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     public bool inTutorial = false;
 
     public float chickenPower = 0;
-    float maxChickenPower = 5;
+    float maxChickenPower = 100;
 
     bool convertingAll = false;
 
@@ -80,6 +80,10 @@ public class PlayerController : MonoBehaviour
         if(transform.position.y < -5)
         {
             print("dying");
+            if(inTutorial)
+            {
+                SceneManager.LoadScene("tutorial");
+            }
             SceneManager.LoadScene("Death");
         }
 

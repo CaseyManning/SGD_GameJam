@@ -16,8 +16,8 @@ public class TutorialController : MonoBehaviour
     float walkTimer = 1f;
     float rotateTimer = 0.5f;
     float convertTimer = 5f;
-    float conclusionTimer = 7f;
-    float doneTimer = 5f;
+    float conclusionTimer = 3f;
+    float doneTimer = 3f;
 
     float jumpCount = 0;
 
@@ -77,7 +77,7 @@ public class TutorialController : MonoBehaviour
         }
         if (state == TutorialStep.Convert2)
         {
-            GetComponent<Text>().text = "Having more Chickens allows you to turn larger things into Chickens";
+            GetComponent<Text>().text = "Larger objects require more nearby chickens to convert";
             convertTimer -= Time.deltaTime;
             if(convertTimer <= 0)
             {
@@ -90,7 +90,7 @@ public class TutorialController : MonoBehaviour
         }
         if (state == TutorialStep.Conclusion)
         {  
-            GetComponent<Text>().text = "Great Job! The larger the object, the more Chickens you need to convert it";
+            GetComponent<Text>().text = "Everything in the world can be turned into a chicken";
             conclusionTimer -= Time.deltaTime;
             if (conclusionTimer <= 0)
             {
@@ -99,7 +99,7 @@ public class TutorialController : MonoBehaviour
         }
         if(state == TutorialStep.Done)
         {
-            GetComponent<Text>().text = "I wonder what other things we can turn into Chickens...";
+            GetComponent<Text>().text = "Good Luck!";
             doneTimer -= Time.deltaTime;
             if(doneTimer <= 0)
             {
