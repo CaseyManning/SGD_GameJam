@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -54,6 +55,12 @@ public class PlayerController : MonoBehaviour
         }
 
         convertAction();
+
+        if(transform.position.y < -5)
+        {
+            print("dying");
+            SceneManager.LoadScene("Death");
+        }
     }
 
     void jumpPlayer() {

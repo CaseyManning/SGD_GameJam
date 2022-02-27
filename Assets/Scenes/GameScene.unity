@@ -315,7 +315,7 @@ MonoBehaviour:
   jump: {x: 0, y: 0, z: 0}
   accel: 2
   maxSpeed: 3
-  jumpSpeed: 20
+  jumpSpeed: 40
   gravity: 10
   feathers: {fileID: 8552877907092101758, guid: bf8dfbab29bf54f13add1f88c728e606, type: 3}
   convertRange: 1.5
