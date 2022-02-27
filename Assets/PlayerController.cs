@@ -68,9 +68,9 @@ public class PlayerController : MonoBehaviour
     void movePlayer() {
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized * maxSpeed;
 
-        //Vector3 refVel = Vector3.zero;
-        //float smoothVal = .05f;
-        //rb.velocity = Vector3.SmoothDamp(rb.velocity, move, ref refVel, smoothVal);
+        Vector3 refVel = Vector3.zero;
+        float smoothVal = .05f;
+        rb.velocity = Vector3.SmoothDamp(rb.velocity, move, ref refVel, smoothVal);
 
         if (move.magnitude > 0.1)
         {
