@@ -63,7 +63,15 @@ public class FoxScr : MonoBehaviour
             //if(Vector3.Distance(transform.position, destination) < 1f || patrolTimer < 0)
             if (patrolTimer < 0)
             {
-                SetNewRandomDestination();
+                destination = SetNewRandomDestination();
+            } else 
+                {
+                    if (Vector3.Distance(transform.position, destination) <= 1f)
+                {
+                    GetComponent<Animator>().SetBool("Idle", true);
+                } else {
+                    GetComponent<Animator>().SetBool("Idle", false);
+                }
             }
 
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Chicken"))
@@ -86,7 +94,7 @@ public class FoxScr : MonoBehaviour
             if(target == null)
             {
                 state = EnemyState.PATROL;
-                SetNewRandomDestination();
+                destination = SetNewRandomDestination();
             }
 
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Chicken"))
@@ -101,7 +109,7 @@ public class FoxScr : MonoBehaviour
             if(Vector3.Distance(target.transform.position, transform.position) > visionRadius * 1.5f)
             {
                 state = EnemyState.PATROL;
-                SetNewRandomDestination();
+                destination = SetNewRandomDestination();
             }
 
             //GameObject[] chickens = GameObject.FindGameObjectsWithTag("Chicken");
@@ -134,7 +142,7 @@ public class FoxScr : MonoBehaviour
             if(attackCooldown < 0)
             {
                 nav.enabled = true;
-                SetNewRandomDestination();
+                destination = SetNewRandomDestination();
                 GameObject f = Instantiate(feathers);
                 f.transform.position = attackTarget.transform.position;
                 if (attackTarget.CompareTag("Player"))

@@ -14,7 +14,7 @@ public class TutorialController : MonoBehaviour
     TutorialStep state;
 
     float walkTimer = 1f;
-    float rotateTimer = 0.5f;
+    float rotateTimer = 4f;
     float convertTimer = 5f;
     float conclusionTimer = 3f;
     float doneTimer = 3f;
@@ -58,10 +58,9 @@ public class TutorialController : MonoBehaviour
         }
         if(state == TutorialStep.Rotate)
         {
-            if (Input.GetAxis("Horizontal") != 0 && (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)))
-            {
-                rotateTimer -= Time.deltaTime;
-            }
+            //if (Input.GetAxis("Horizontal") != 0 && (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2)))
+            //if (Input.GetMouseButton(0) || Input.GetMouseButton(1) || Input.GetMouseButton(2))
+            rotateTimer -= Time.deltaTime;
             if (rotateTimer <= 0)
             {
                 state = TutorialStep.Convert;
