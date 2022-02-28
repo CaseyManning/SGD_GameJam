@@ -96,7 +96,6 @@ public class FoxScr : MonoBehaviour
                 state = EnemyState.PATROL;
                 destination = SetNewRandomDestination();
             }
-
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Chicken"))
             {
                 if (Vector3.Distance(g.transform.position, transform.position) < Vector3.Distance(target.transform.position, transform.position)-0.5)
@@ -104,9 +103,8 @@ public class FoxScr : MonoBehaviour
                     target = g;
                 }
             }
-
             nav.SetDestination(target.transform.position);
-            if(Vector3.Distance(target.transform.position, transform.position) > visionRadius * 1.5f)
+            if (Vector3.Distance(target.transform.position, transform.position) > visionRadius * 1.5f)
             {
                 state = EnemyState.PATROL;
                 destination = SetNewRandomDestination();
@@ -192,7 +190,7 @@ public class FoxScr : MonoBehaviour
         //float randRadius = Random.Range(20, 30);
         int noFreeze = 0;
         // re-sample dest points until one is decently far away
-        while ((Vector3.Distance(transform.position, destination) < 2.5f) && (noFreeze < 100)) {
+        while ((Vector3.Distance(transform.position, destination) < 2.5f) && (noFreeze < 50)) {
             Vector3 randDir = Random.insideUnitSphere * maxRadius;
             randDir += transform.position;
             NavMesh.SamplePosition(randDir, out navHit, maxRadius, -1);
