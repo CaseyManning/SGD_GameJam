@@ -4,8 +4,17 @@ ModelImporter:
   serializedVersion: 21100
   internalIDToNameTable:
   - first:
+      74: -1952392972070639749
+    second: Armature|Convert
+  - first:
+      74: -2065775210875148712
+    second: Armature|Fly
+  - first:
       74: -8945691123924629249
     second: Armature|Idle
+  - first:
+      74: 1079665108409675491
+    second: Armature|Jump
   - first:
       74: 8349542763059015795
     second: Armature|Walk
