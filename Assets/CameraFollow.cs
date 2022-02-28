@@ -11,6 +11,18 @@ public class CameraFollow : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         offset = transform.position - player.transform.position;
+
+        Vector3 vec = transform.forward;
+        vec = new Vector3(vec.x, 0, vec.z);
+        vec.Normalize();
+
+        player.GetComponent<PlayerController>().rightVec = vec;
+
+        Vector3 rvec = transform.right;
+        rvec = new Vector3(rvec.x, 0, rvec.z);
+        rvec.Normalize();
+
+        player.GetComponent<PlayerController>().forwardVec = rvec;
     }
 
 
