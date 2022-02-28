@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
     public bool inTutorial = false;
 
     public float chickenPower = 0;
-    float maxChickenPower = 100;
+    float maxChickenPower = 80;
 
     bool convertingAll = false;
 
@@ -328,6 +328,10 @@ public class PlayerController : MonoBehaviour
         {
             yield return new WaitForSeconds(0.02f);
             GameObject.FindGameObjectWithTag("MainCamera").transform.position += -GameObject.FindGameObjectWithTag("MainCamera").transform.forward * 0.2f;
+            if(i == 50)
+            {
+                boombox.GetComponent<AudioController>().PlayOneShot(5);
+            }
         }
         for (int i = 0; i < 100; i++)
         {
