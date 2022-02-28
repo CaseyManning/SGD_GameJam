@@ -154,7 +154,7 @@ public class FoxScr : MonoBehaviour
                         StartCoroutine(endgame());
                     } else
                     {
-                        player.GetComponent<PlayerController>().beenAttacked = true;
+                        //player.GetComponent<PlayerController>().beenAttacked = true;
                         player.transform.position = others[0].transform.position;
                         Destroy(others[0]);
                     }

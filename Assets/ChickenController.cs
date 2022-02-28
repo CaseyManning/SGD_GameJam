@@ -16,6 +16,9 @@ public class ChickenController : MonoBehaviour
         nav = GetComponent<NavMeshAgent>();
         GetComponent<Animator>().SetBool("Walk", true);
         gameObject.tag = "Chicken";
+
+        //GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
+        GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
     }
 
     // Update is called once per frame

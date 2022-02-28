@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
 
         convertAction();
 
-        if(transform.position.y < -5)
+        if(transform.position.y < -7)
         {
             print("dying");
             if(inTutorial)
@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
                         helper.GetComponent<ChickenController>().doConvert(transform.position);
                     }
                     convertingAll = true;
-                    GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
+                    //GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
                     beenAttacked = false;
                     StartCoroutine(ConvertToChicken(GameObject.FindGameObjectWithTag("Ground")));
                 }
@@ -194,7 +194,7 @@ public class PlayerController : MonoBehaviour
                     {
                         helper.GetComponent<ChickenController>().doConvert(g.transform.position);
                     }
-                    GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
+                    //GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
                     beenAttacked = false;
                     StartCoroutine(ConvertToChicken(g));
                 }
@@ -228,7 +228,7 @@ public class PlayerController : MonoBehaviour
                     {
                         helper.GetComponent<ChickenController>().doConvert(g.transform.position);
                     }
-                    GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
+                    //GameObject.FindGameObjectWithTag("Boombox").GetComponent<AudioController>().PlayOneShot(1);
                     StartCoroutine(ConvertToChicken(g));
                 }
 
